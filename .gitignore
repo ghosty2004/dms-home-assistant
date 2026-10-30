@@ -1,0 +1,30 @@
+# Qt / QML build artifacts
+*.qmlc
+*.jsc
+.qmlls.ini
+
+# Editor and OS files
+*.swp
+.DS_Store
+
+# DMS settings: contain the Home Assistant URL and access token
+plugin_settings.json
+settings.json
+session.json
+
+# Logs and dumps: may contain URLs, entity data or tokens
+*.log
+*.qslog
+*.journal
+journal*.txt
+*.dump
+*.core
+core.*
+ha*.json
+
+# Secrets
+.env
+.env.*
+*.token
+*secret*
+*credentials*

@@ -1,0 +1,35 @@
+{
+    "id": "homeAssistantDash",
+    "name": "Home Assistant",
+    "description": "Your Home Assistant inside the dash: rooms, lights, climate, security, media and automations with HA icons, colors and controls",
+    "version": "1.0.0",
+    "author": "ghosty2004",
+    "type": "composite",
+    "capabilities": ["daemon", "dash-tab", "dash-card", "dankbar-widget"],
+    "icon": "home",
+    "components": {
+        "daemon": "./HaDaemon.qml",
+        "dash": "./HaDashTab.qml",
+        "dashCard": "./HaDashCard.qml",
+        "widget": "./HaBarWidget.qml"
+    },
+    "settings": "./HaSettings.qml",
+    "dash": {
+        "title": "Home",
+        "icon": "home",
+        "card": {
+            "title": "Home Assistant",
+            "icon": "home",
+            "w": 3,
+            "h": 2,
+            "minW": 2,
+            "minH": 1,
+            "maxW": 8,
+            "maxH": 6
+        }
+    },
+    "requires_dms": ">=2.0.0",
+    "dependencies": ["qt6-websockets"],
+    "license": "MIT",
+    "permissions": ["settings_read", "settings_write", "network"]
+}

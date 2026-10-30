@@ -1,0 +1,2 @@
+singleton HaService 1.0 HaService.qml
+singleton Ha 1.0 Ha.qml
