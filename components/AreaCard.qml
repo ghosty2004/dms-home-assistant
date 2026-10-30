@@ -120,7 +120,7 @@ Rectangle {
             id: countText
             anchors.centerIn: parent
             text: root.activeCount + " on"
-            font.pixelSize: 11
+            font.pixelSize: Theme.fontSizeSmall - 1
             font.weight: Theme.fontWeightBold
             color: Theme.onPrimary
         }

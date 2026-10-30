@@ -163,7 +163,7 @@ Item {
                         text: Math.round(parent.shownValue) + "%"
                         font.pixelSize: Theme.fontSizeLarge
                         font.weight: Theme.fontWeightBold
-                        color: parent.ratio > 0.88 ? "#ffffff" : Theme.surfaceText
+                        color: parent.ratio > 0.88 ? Ha.onAccent(parent.color) : Theme.surfaceText
                     }
                 }
 
@@ -251,7 +251,7 @@ Item {
                         text: Math.round(parent.shownValue) + "%"
                         font.pixelSize: Theme.fontSizeLarge
                         font.weight: Theme.fontWeightBold
-                        color: parent.ratio > 0.88 ? "#ffffff" : Theme.surfaceText
+                        color: parent.ratio > 0.88 ? Ha.onAccent(parent.color) : Theme.surfaceText
                     }
                 }
 

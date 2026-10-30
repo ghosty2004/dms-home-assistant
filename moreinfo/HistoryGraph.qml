@@ -137,7 +137,7 @@ Rectangle {
                     id: rangeText
                     anchors.centerIn: parent
                     text: rangeBtn.modelData < 48 ? rangeBtn.modelData + "h" : (rangeBtn.modelData / 24) + "d"
-                    font.pixelSize: 11
+                    font.pixelSize: Theme.fontSizeSmall - 1
                     font.weight: Theme.fontWeightMedium
                     color: root.hours === rangeBtn.modelData ? Theme.surfaceText : Theme.surfaceVariantText
                 }
@@ -288,20 +288,20 @@ Rectangle {
         StyledText {
             anchors.left: parent.left
             text: root.formatTime(root.tStart)
-            font.pixelSize: 10
+            font.pixelSize: Theme.fontSizeSmall - 2
             color: Theme.surfaceVariantText
         }
         StyledText {
             anchors.horizontalCenter: parent.horizontalCenter
             visible: root.numeric && root.points.length > 0
             text: "min " + Ha.formatNumber(root.range.min) + " · avg " + Ha.formatNumber(root.range.avg) + " · max " + Ha.formatNumber(root.range.max) + (root.unit ? " " + root.unit : "")
-            font.pixelSize: 10
+            font.pixelSize: Theme.fontSizeSmall - 2
             color: Theme.surfaceVariantText
         }
         StyledText {
             anchors.right: parent.right
             text: "now"
-            font.pixelSize: 10
+            font.pixelSize: Theme.fontSizeSmall - 2
             color: Theme.surfaceVariantText
         }
     }

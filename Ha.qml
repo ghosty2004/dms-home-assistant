@@ -21,9 +21,11 @@ Singleton {
         return Mdi.glyph(name) || Mdi.glyph("mdi:help-circle-outline");
     }
 
-    // ---------------------------------------------------------------- palette (HA color.globals)
+    // ---------------------------------------------------------------- palette
 
-    readonly property var palette: ({
+    // State colors of the HA frontend (color.globals). Used as is in the default
+    // "ha" mode; "harmonized" maps each one to the closest theme accent slot.
+    readonly property var haPalette: ({
             red: "#f44336",
             pink: "#e91e63",
             purple: "#926bc7",
@@ -43,6 +45,35 @@ Singleton {
             brown: "#795548",
             grey: "#9e9e9e"
         })
+
+    readonly property var accentSlots: ({
+            red: "red",
+            pink: "pink",
+            purple: "purple",
+            deepPurple: "purple",
+            indigo: "blue",
+            blue: "blue",
+            lightBlue: "blue",
+            cyan: "teal",
+            teal: "teal",
+            green: "green",
+            lightGreen: "green",
+            lime: "green",
+            yellow: "yellow",
+            amber: "yellow",
+            orange: "orange",
+            deepOrange: "orange",
+            brown: "orange"
+        })
+
+    readonly property var palette: {
+        if (HaService.colorMode !== "harmonized")
+            return haPalette;
+        const out = {};
+        for (const name in haPalette)
+            out[name] = Theme.accent(accentSlots[name])?.onContainer ?? haPalette[name];
+        return out;
+    }
 
     readonly property color inactiveColor: Theme.surfaceVariantText
     readonly property bool themeColors: HaService.colorMode === "theme"
@@ -258,6 +289,14 @@ Singleton {
             b *= k;
         }
         return Qt.rgba(Math.min(255, r) / 255, Math.min(255, g) / 255, Math.min(255, b) / 255, 1);
+    }
+
+    // Readable content color on top of an accent fill, picked from theme tokens.
+    function onAccent(c) {
+        const lum = col => 0.2126 * col.r + 0.7152 * col.g + 0.0722 * col.b;
+        const light = Theme.isLightMode ? Theme.background : Theme.surfaceText;
+        const dark = Theme.isLightMode ? Theme.surfaceText : Theme.background;
+        return lum(Qt.color(c)) > 0.55 ? dark : light;
     }
 
     // Returns the HA state color of an entity, or the inactive color.

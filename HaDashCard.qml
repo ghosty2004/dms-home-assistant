@@ -163,7 +163,7 @@ DashCardComponent {
                             text: Ha.secondaryText(mini.modelData, mini.st)
                             elide: Text.ElideRight
                             wrapMode: Text.NoWrap
-                            font.pixelSize: 11
+                            font.pixelSize: Theme.fontSizeSmall - 1
                             color: root.mutedColor
                         }
                     }

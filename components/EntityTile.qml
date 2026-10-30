@@ -12,7 +12,6 @@ Rectangle {
     property var stripPrefixes: []
     property bool showFeature: true
     property var st: HaService.get(entityId)
-    property string nameOverride: ""
 
     readonly property string domain: Ha.domainOf(entityId)
     readonly property bool unavailable: !st || st.state === "unavailable"
@@ -83,7 +82,7 @@ Rectangle {
 
         StyledText {
             width: parent.width
-            text: root.nameOverride || Ha.entityName(root.entityId, root.st, root.stripPrefixes)
+            text: Ha.entityName(root.entityId, root.st, root.stripPrefixes)
             elide: Text.ElideRight
             wrapMode: Text.NoWrap
             font.pixelSize: Theme.fontSizeMedium

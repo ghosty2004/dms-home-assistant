@@ -230,7 +230,7 @@ DFlickable {
                         }
                         StyledText {
                             text: Ha.relativeTime(Date.parse(note.modelData.created_at))
-                            font.pixelSize: 11
+                            font.pixelSize: Theme.fontSizeSmall - 1
                             color: Theme.withAlpha(Theme.surfaceVariantText, 0.8)
                         }
                     }

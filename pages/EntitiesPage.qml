@@ -87,86 +87,17 @@ Item {
         return Ha.groupBySection(results.slice(0, root.maxResults));
     }
 
-    Rectangle {
+    DSearchField {
         id: search
         width: parent.width
-        height: 42
-        radius: height / 2
-        color: DashMetrics.chipColor
-        border.width: input.activeFocus ? 2 : 0
-        border.color: Theme.primary
-
-        MdiIcon {
-            id: searchIcon
-            anchors.left: parent.left
-            anchors.leftMargin: 14
-            anchors.verticalCenter: parent.verticalCenter
-            icon: "mdi:magnify"
-            size: 20
-            color: Theme.surfaceVariantText
-        }
-
-        TextInput {
-            id: input
-            anchors.left: searchIcon.right
-            anchors.leftMargin: Theme.spacingS
-            anchors.right: clearBtn.left
-            anchors.rightMargin: Theme.spacingS
-            anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: Theme.fontSizeMedium
-            font.family: Theme.fontFamily
-            color: Theme.surfaceText
-            selectionColor: Theme.primary
-            selectedTextColor: Theme.onPrimary
-            clip: true
-            onTextChanged: debounce.restart()
-            Keys.onEscapePressed: event => {
-                if (text !== "") {
-                    text = "";
-                    event.accepted = true;
-                } else {
-                    event.accepted = false;
-                }
-            }
-
-            StyledText {
-                anchors.verticalCenter: parent.verticalCenter
-                visible: input.text === ""
-                text: "Search " + root.pool.length + " entities by name, area or id"
-                font.pixelSize: Theme.fontSizeMedium
-                color: Theme.withAlpha(Theme.surfaceVariantText, 0.8)
-            }
-        }
-
-        MdiIcon {
-            id: clearBtn
-            anchors.right: parent.right
-            anchors.rightMargin: 14
-            anchors.verticalCenter: parent.verticalCenter
-            icon: "mdi:close-circle"
-            size: 18
-            visible: input.text !== ""
-            color: Theme.surfaceVariantText
-
-            MouseArea {
-                anchors.fill: parent
-                anchors.margins: -6
-                cursorShape: Qt.PointingHandCursor
-                onClicked: input.text = ""
-            }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            z: -1
-            onClicked: input.forceActiveFocus()
-        }
+        placeholderText: "Search " + root.pool.length + " entities by name, area or id"
+        onTextChanged: debounce.restart()
     }
 
     Timer {
         id: debounce
         interval: 120
-        onTriggered: root.query = input.text
+        onTriggered: root.query = search.text
     }
 
     ChipBar {

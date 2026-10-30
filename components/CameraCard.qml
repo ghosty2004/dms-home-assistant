@@ -11,7 +11,7 @@ Rectangle {
     property string entityId: ""
     property var st: HaService.get(entityId)
     property int refreshInterval: 10000
-    property bool live: visible
+    property bool live: visible && HaService.dashLive
     property real stamp: Date.now()
 
     readonly property bool unavailable: !st || st.state === "unavailable"
@@ -93,7 +93,7 @@ Rectangle {
             }
             GradientStop {
                 position: 1
-                color: Qt.rgba(0, 0, 0, 0.65)
+                color: Theme.withAlpha(Theme.scrimColor, 0.65)
             }
         }
 
@@ -116,7 +116,7 @@ Rectangle {
                 text: Ha.entityName(root.entityId, root.st)
                 font.pixelSize: Theme.fontSizeSmall
                 font.weight: Theme.fontWeightMedium
-                color: "white"
+                color: Theme.isLightMode ? Theme.background : Theme.surfaceText
             }
         }
     }

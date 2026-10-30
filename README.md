@@ -130,7 +130,7 @@ Open **Settings → Plugins → Home Assistant**:
 | --- | --- |
 | Home Assistant URL | e.g. `http://homeassistant.local:8123` or `https://ha.example.com`. The WebSocket URL is derived from it. |
 | Long-lived access token | Create one in Home Assistant under **Profile → Security → Long-lived access tokens**. |
-| State colors | *Home Assistant* (amber lights, orange heating, purple covers…) or *Theme accent* (your Material You primary color). |
+| State colors | *Home Assistant*: the exact frontend colors (amber lights, orange heating, purple covers…). *Harmonized with theme*: the same meaning, using the accent hues of your DMS theme. *Theme accent*: everything active in your primary color. |
 | Show unavailable entities | Turn off to hide entities whose state is `unavailable`. |
 | Bar entity | Entity shown in the bar widget, e.g. `sensor.outdoor_temperature`. Empty shows how many lights are on. |
 

@@ -69,7 +69,7 @@ Item {
                             id: badgeText
                             anchors.centerIn: parent
                             text: navItem.modelData.badge ?? ""
-                            font.pixelSize: 10
+                            font.pixelSize: Theme.fontSizeSmall - 2
                             font.weight: Theme.fontWeightBold
                             color: Theme.onError
                         }

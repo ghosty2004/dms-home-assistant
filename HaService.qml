@@ -23,6 +23,9 @@ Singleton {
     property var favorites: []
     property var hiddenEntities: []
 
+    // True while the Home tab is on screen; refresh timers only run then.
+    property bool dashLive: false
+
     readonly property bool configured: url !== "" && token !== ""
     readonly property string baseUrl: url.replace(/\/+$/, "")
     readonly property string wsUrl: baseUrl.replace(/^http/, "ws") + "/api/websocket"

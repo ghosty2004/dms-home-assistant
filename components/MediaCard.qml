@@ -50,7 +50,7 @@ Rectangle {
     Timer {
         interval: 1000
         repeat: true
-        running: root.playing && root.visible
+        running: root.playing && root.visible && HaService.dashLive
         onTriggered: root.now = Date.now()
     }
 
@@ -137,7 +137,7 @@ Rectangle {
             text: Ha.entityName(root.entityId, root.st) + " · " + Ha.stateText(root.entityId, root.st) + (root.a.source ? " · " + root.a.source : "")
             elide: Text.ElideRight
             wrapMode: Text.NoWrap
-            font.pixelSize: 11
+            font.pixelSize: Theme.fontSizeSmall - 1
             font.weight: Theme.fontWeightMedium
             color: Theme.surfaceVariantText
         }

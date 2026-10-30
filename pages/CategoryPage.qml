@@ -151,7 +151,6 @@ DFlickable {
                         width: (camGrid.width - camGrid.columnSpacing * (camGrid.columns - 1)) / camGrid.columns
                         height: implicitHeight
                         entityId: modelData
-                        live: root.visible
                         onMoreInfo: id => root.moreInfo(id)
                     }
                 }

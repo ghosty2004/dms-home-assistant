@@ -32,7 +32,6 @@ Rectangle {
         icon: root.icon
         size: root.iconSize
         color: root.dimmed ? Theme.withAlpha(Theme.surfaceText, 0.35) : root.active ? root.accent : Theme.withAlpha(Theme.surfaceText, 0.75)
-        opacity: 1
     }
 
     StateLayer {

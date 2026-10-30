@@ -75,7 +75,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         radius: DashMetrics.cardRadius
-        color: Theme.withAlpha("#000000", 0.45)
+        color: Theme.withAlpha(Theme.scrimColor, Theme.scrimAlpha)
 
         MouseArea {
             anchors.fill: parent
@@ -143,7 +143,7 @@ Item {
                     visible: text !== ""
                     elide: Text.ElideRight
                     wrapMode: Text.NoWrap
-                    font.pixelSize: 11
+                    font.pixelSize: Theme.fontSizeSmall - 1
                     color: Theme.surfaceVariantText
                 }
                 StyledText {
@@ -415,7 +415,7 @@ Item {
             entityId: root.shownId
             height: implicitHeight
             refreshInterval: 2000
-            live: root.open
+            live: root.open && HaService.dashLive
         }
     }
 

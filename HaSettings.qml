@@ -31,11 +31,15 @@ PluginSettings {
     SelectionSetting {
         settingKey: "colorMode"
         label: "State colors"
-        description: "Home Assistant colors (amber lights, orange heating…) or your Material You theme"
+        description: "Home Assistant colors (amber lights, orange heating…), the same meaning in your theme's accent hues, or only your theme accent"
         options: [
             {
                 label: "Home Assistant",
                 value: "ha"
+            },
+            {
+                label: "Harmonized with theme",
+                value: "harmonized"
             },
             {
                 label: "Theme accent",

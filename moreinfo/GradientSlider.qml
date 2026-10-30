@@ -8,8 +8,7 @@ Item {
     property real value: 0
     property real from: 0
     property real to: 100
-    property var stops: ["#ff0000", "#00ff00"]
-    property color knobColor: "#ffffff"
+    property var stops: []
     property bool dragging: false
     property real dragValue: value
     readonly property real shown: dragging ? dragValue : value
@@ -45,9 +44,9 @@ Item {
         radius: 3
         anchors.verticalCenter: parent.verticalCenter
         x: Math.max(4, Math.min(parent.width - width - 4, root.ratio * parent.width - width / 2))
-        color: "#ffffff"
+        color: Theme.isLightMode ? Theme.background : Theme.surfaceText
         border.width: 1
-        border.color: Qt.rgba(0, 0, 0, 0.25)
+        border.color: Theme.withAlpha(Theme.scrimColor, 0.25)
     }
 
     MouseArea {

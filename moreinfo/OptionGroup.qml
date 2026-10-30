@@ -4,6 +4,7 @@ import QtQuick
 import qs.Common
 import qs.DCommon.Widgets
 import "../components"
+import ".."
 
 // Titled group of selectable chips (HVAC modes, presets, effects, select options).
 Column {
@@ -73,21 +74,21 @@ Column {
                         visible: !!opt.modelData.icon
                         icon: opt.modelData.icon ?? ""
                         size: 18
-                        color: opt.selected ? "#ffffff" : Theme.surfaceText
+                        color: opt.selected ? Ha.onAccent(root.accent) : Theme.surfaceText
                     }
                     StyledText {
                         anchors.verticalCenter: parent.verticalCenter
                         text: opt.modelData.label
                         font.pixelSize: Theme.fontSizeSmall
                         font.weight: Theme.fontWeightMedium
-                        color: opt.selected ? "#ffffff" : Theme.surfaceText
+                        color: opt.selected ? Ha.onAccent(root.accent) : Theme.surfaceText
                     }
                 }
 
                 StateLayer {
                     anchors.fill: parent
                     cornerRadius: opt.radius
-                    stateColor: opt.selected ? "#ffffff" : Theme.surfaceText
+                    stateColor: opt.selected ? Ha.onAccent(root.accent) : Theme.surfaceText
                     onClicked: root.picked(opt.modelData.value)
                 }
             }

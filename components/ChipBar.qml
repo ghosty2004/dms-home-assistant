@@ -3,10 +3,9 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Common
 import qs.DCommon.Widgets
-import qs.Modules.DDash
 
 // Horizontally scrolling filter chips with MDI icons.
-Flickable {
+DFlickable {
     id: root
 
     property var model: []
@@ -20,13 +19,7 @@ Flickable {
     clip: true
     flickableDirection: Flickable.HorizontalFlick
     boundsBehavior: Flickable.StopAtBounds
-
-    WheelHandler {
-        acceptedDevices: PointerDevice.Mouse
-        onWheel: event => {
-            root.contentX = Math.max(0, Math.min(root.contentWidth - root.width, root.contentX - event.angleDelta.y));
-        }
-    }
+    showScrollBar: false
 
     Row {
         id: row
@@ -70,7 +63,7 @@ Flickable {
                         anchors.verticalCenter: parent.verticalCenter
                         visible: chip.modelData.count !== undefined
                         text: chip.modelData.count ?? ""
-                        font.pixelSize: 11
+                        font.pixelSize: Theme.fontSizeSmall - 1
                         color: chip.isCurrent ? Theme.withAlpha(Theme.onSecondaryContainer, 0.7) : Theme.surfaceVariantText
                     }
                 }

@@ -102,7 +102,7 @@ Item {
             }
             // handle
             const at = a0 + span * root.ratioOf(root.shown);
-            ctx.fillStyle = "#ffffff";
+            ctx.fillStyle = Ha.onAccent(root.color);
             ctx.beginPath();
             ctx.arc(cx + Math.cos(at) * r, cy + Math.sin(at) * r, root.thickness * 0.62, 0, Math.PI * 2);
             ctx.fill();
@@ -169,7 +169,7 @@ Item {
 
             StyledText {
                 text: root.enabled ? Ha.formatNumber(Math.floor(root.shown)) : "Off"
-                font.pixelSize: root.size * 0.22
+                font.pixelSize: Theme.fontSizeDisplayLarge
                 font.weight: Font.Normal
                 color: Theme.surfaceText
             }
@@ -179,13 +179,13 @@ Item {
                 anchors.topMargin: root.size * 0.04
                 StyledText {
                     text: Ha.temperatureUnit()
-                    font.pixelSize: root.size * 0.07
+                    font.pixelSize: Theme.fontSizeMedium
                     color: Theme.surfaceText
                 }
                 StyledText {
                     visible: root.step < 1
                     text: "." + Math.round((root.shown - Math.floor(root.shown)) * 10)
-                    font.pixelSize: root.size * 0.09
+                    font.pixelSize: Theme.fontSizeXLarge
                     color: Theme.surfaceText
                 }
             }

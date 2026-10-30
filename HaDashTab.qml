@@ -142,6 +142,12 @@ DashTabComponent {
         return false;
     }
 
+    Binding {
+        target: HaService
+        property: "dashLive"
+        value: root.live
+    }
+
     NavRail {
         id: rail
         anchors.left: parent.left

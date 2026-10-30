@@ -1,6 +1,7 @@
 import QtQuick
 import qs.Common
 import qs.DCommon.Widgets
+import ".."
 
 // HA style "big" slider: a tinted track with a filled part. Horizontal or vertical.
 Item {
@@ -69,7 +70,7 @@ Item {
             // Handle line like the HA control slider
             Rectangle {
                 visible: root.enabled
-                color: Theme.withAlpha("#ffffff", 0.85)
+                color: Theme.withAlpha(Ha.onAccent(root.color), 0.85)
                 radius: 2
                 width: root.vertical ? parent.width * 0.32 : 4
                 height: root.vertical ? 4 : parent.height * 0.42

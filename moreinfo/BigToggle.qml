@@ -2,6 +2,7 @@ import QtQuick
 import qs.Common
 import qs.DCommon.Widgets
 import "../components"
+import ".."
 
 // HA more-info vertical switch.
 Item {
@@ -52,7 +53,7 @@ Item {
             y: parent.height / 4 - height / 2 + 3
             icon: root.onIcon
             size: 30
-            color: root.checked ? "#ffffff" : Theme.surfaceVariantText
+            color: root.checked ? Ha.onAccent(root.accent) : Theme.surfaceVariantText
         }
         MdiIcon {
             anchors.horizontalCenter: parent.horizontalCenter
