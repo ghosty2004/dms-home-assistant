@@ -4,9 +4,9 @@ Your Home Assistant inside the DankMaterialShell dashboard, with the same icons,
 
 ![Areas](screenshots/areas.png)
 
-| Thermostat | Light | Weather |
-| --- | --- | --- |
-| ![Thermostat](screenshots/thermostat.png) | ![Light](screenshots/light.png) | ![Weather](screenshots/weather.png) |
+| Thermostat | Light | Weather | Camera |
+| --- | --- | --- | --- |
+| ![Thermostat](screenshots/thermostat.png) | ![Light](screenshots/light.png) | ![Weather](screenshots/weather.png) | ![Camera](screenshots/camera.png) |
 
 | Climate | Lights | Scenes & automations | All entities |
 | --- | --- | --- | --- |
