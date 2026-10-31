@@ -425,6 +425,7 @@ Item {
             entityId: root.shownId
             height: implicitHeight
             refreshInterval: 2000
+            stream: true
             live: root.open && HaService.dashLive
         }
     }

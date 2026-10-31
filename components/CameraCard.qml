@@ -4,7 +4,9 @@ import qs.DCommon.Widgets
 import qs.Modules.DDash
 import ".."
 
-// Camera snapshot that refreshes while visible (HA picture entity card).
+// Camera snapshot that refreshes while visible (HA picture entity card). With
+// `stream` it plays the live stream instead: HLS when the camera offers it,
+// otherwise the MJPEG proxy stream, like the HA frontend.
 Rectangle {
     id: root
 
@@ -16,6 +18,55 @@ Rectangle {
 
     readonly property bool unavailable: !st || st.state === "unavailable"
     readonly property string picture: st?.attributes?.entity_picture ?? ""
+
+    property bool stream: false
+    property string streamUrl: ""
+    property bool _hlsFailed: false
+    readonly property bool streaming: stream && live && !unavailable
+    readonly property bool streamHasFrame: streaming && liveLoader.status === Loader.Ready && liveLoader.item.gotFrame
+
+    function _resolveStream() {
+        streamUrl = "";
+        if (!streaming)
+            return;
+        const a = st?.attributes ?? {};
+        const mjpeg = HaService.mediaUrl("/api/camera_proxy_stream/" + entityId + "?token=" + (a.access_token ?? ""));
+        // CameraEntityFeature.STREAM
+        if ((a.supported_features ?? 0) & 2 && !_hlsFailed) {
+            const id = entityId;
+            HaService.send({
+                type: "camera/stream",
+                entity_id: id,
+                format: "hls"
+            }, (res, err) => {
+                if (id !== root.entityId || !root.streaming)
+                    return;
+                root.streamUrl = res?.url ? HaService.mediaUrl(res.url) : mjpeg;
+            });
+        } else {
+            streamUrl = mjpeg;
+        }
+    }
+
+    function _streamFailed() {
+        if (streamUrl.includes("/api/hls/"))
+            _hlsFailed = true;
+        streamUrl = "";
+        if (streaming)
+            streamRetry.restart();
+    }
+
+    onStreamingChanged: Qt.callLater(_resolveStream)
+    onEntityIdChanged: {
+        _hlsFailed = false;
+        Qt.callLater(_resolveStream);
+    }
+
+    Timer {
+        id: streamRetry
+        interval: 3000
+        onTriggered: root._resolveStream()
+    }
 
     signal moreInfo(string entityId)
 
@@ -35,7 +86,7 @@ Rectangle {
     Timer {
         interval: root.refreshInterval
         repeat: true
-        running: root.live && !root.unavailable
+        running: root.live && !root.unavailable && !root.streamHasFrame
         onTriggered: root.stamp = Date.now()
     }
 
@@ -55,16 +106,40 @@ Rectangle {
         visible: false
         asynchronous: true
         cache: false
-        source: root.picture && !root.unavailable && root.live ? HaService.mediaUrl(root.picture) + (root.picture.includes("?") ? "&" : "?") + "_t=" + root.stamp : ""
+        source: root.picture && !root.unavailable && root.live && !root.streamHasFrame ? HaService.mediaUrl(root.picture) + (root.picture.includes("?") ? "&" : "?") + "_t=" + root.stamp : ""
         onStatusChanged: {
             if (status === Image.Ready)
                 shown.source = source;
         }
     }
 
+    Loader {
+        id: liveLoader
+        anchors.fill: parent
+        active: root.streaming && root.streamUrl !== ""
+        visible: root.streamHasFrame
+        source: "LiveCameraView.qml"
+        onLoaded: {
+            item.source = Qt.binding(() => root.streamUrl);
+            item.playing = Qt.binding(() => root.streaming);
+        }
+    }
+
+    Connections {
+        target: liveLoader.item
+        ignoreUnknownSignals: true
+        function onFailed(message) {
+            console.warn("[HA] camera stream", root.entityId, message);
+            root._streamFailed();
+        }
+        function onEnded() {
+            root._streamFailed();
+        }
+    }
+
     Column {
         anchors.centerIn: parent
-        visible: shown.status !== Image.Ready
+        visible: shown.status !== Image.Ready && !root.streamHasFrame
         spacing: Theme.spacingS
 
         MdiIcon {
@@ -110,6 +185,14 @@ Rectangle {
                 height: 8
                 radius: 4
                 color: root.unavailable ? Ha.palette.grey : Ha.palette.red
+            }
+            StyledText {
+                anchors.verticalCenter: parent.verticalCenter
+                visible: root.streamHasFrame
+                text: "LIVE"
+                font.pixelSize: Theme.fontSizeSmall
+                font.weight: Theme.fontWeightBold
+                color: Ha.palette.red
             }
             StyledText {
                 anchors.verticalCenter: parent.verticalCenter

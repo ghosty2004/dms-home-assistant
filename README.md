@@ -70,7 +70,7 @@ Entities are shown as Home Assistant style **tile cards**:
 | Alarm panel | Every supported arm mode and disarm |
 | Vacuum, lawn mower | Start, pause, stop, dock, locate |
 | Update | Installed and latest version, release summary, install, skip |
-| Camera | Live snapshot refreshed every 2 seconds |
+| Camera | Live video: HLS when the camera offers it, otherwise the MJPEG stream, like the HA frontend (needs Qt Multimedia, falls back to a snapshot every 2 seconds). Cards on the pages show snapshots every 10 seconds |
 | Weather | Condition with HA-style colored icons, temperature with today's high/low, pressure, humidity, wind with direction and the other measurements the integration reports, daily / hourly / twice daily forecast with precipitation |
 | Person | Picture, zone, coordinates |
 | Sensor, binary sensor | Large value |
@@ -96,6 +96,10 @@ Every dialog also has:
   - Fedora: `qt6-qtwebsockets`
   - Debian / Ubuntu: `qml6-module-qtwebsockets`
 - A **Home Assistant** instance reachable from your machine, with a long-lived access token
+- Optional: **Qt Multimedia** with the FFmpeg backend, for live camera video in the details dialog. Without it cameras show snapshots.
+  - Arch: `qt6-multimedia` and `qt6-multimedia-ffmpeg`
+  - Fedora: `qt6-qtmultimedia`
+  - Debian / Ubuntu: `qml6-module-qtmultimedia`
 
 Tested on [dux-shell](https://github.com/duxlabs-dev/dux-shell) 2.0.0 (DMS 2.0), Qt 6.12 and Home Assistant 2026.9.
 
