@@ -1,2 +1,3 @@
 singleton HaService 1.0 HaService.qml
 singleton Ha 1.0 Ha.qml
+singleton Lovelace 1.0 Lovelace.qml

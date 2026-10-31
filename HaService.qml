@@ -51,6 +51,14 @@ Singleton {
     property var currentUser: null
     property var notifications: ({})
 
+    // Lovelace dashboards: list, and configs fetched on demand by url_path
+    property var dashboards: []
+    property bool dashboardsLoaded: false
+    property var lovelace: ({})
+    property int lovelaceRev: 0
+    property string lovelaceDashboard: ""
+    property string lovelaceView: ""
+
     // Revisions: bump instead of re-assigning big objects
     property int setRev: 0
     property int stateRev: 0
@@ -361,6 +369,63 @@ Singleton {
         subscribe({
             type: "persistent_notification/subscribe"
         }, ev => _onNotifications(ev), null);
+        subscribe({
+            type: "subscribe_events",
+            event_type: "lovelace_updated"
+        }, ev => {
+            const path = ev?.data?.url_path || "lovelace";
+            if (lovelace[path] !== undefined)
+                loadLovelace(path);
+        }, null);
+        if (dashboardsLoaded)
+            loadDashboards();
+        for (const path of Object.keys(lovelace))
+            loadLovelace(path);
+    }
+
+    // ---------------------------------------------------------------- lovelace
+
+    function loadDashboards() {
+        send({
+            type: "lovelace/dashboards/list"
+        }, (res, err) => {
+            if (!res)
+                return;
+            const list = res.filter(d => d.show_in_sidebar !== false).map(d => ({
+                        urlPath: d.url_path,
+                        title: d.title || d.url_path,
+                        icon: d.icon || "mdi:view-dashboard"
+                    }));
+            if (!list.some(d => d.urlPath === "lovelace"))
+                list.unshift({
+                    urlPath: "lovelace",
+                    title: "Overview",
+                    icon: "mdi:view-dashboard"
+                });
+            dashboardsLoaded = true;
+            dashboards = list;
+        });
+    }
+
+    // "lovelace" is the default dashboard, which is fetched without url_path.
+    function loadLovelace(path) {
+        const msg = {
+            type: "lovelace/config",
+            force: false
+        };
+        if (path && path !== "lovelace")
+            msg.url_path = path;
+        send(msg, (res, err) => {
+            const next = Object.assign({}, lovelace);
+            if (res)
+                next[path] = res;
+            else if (err?.code !== "disconnected")
+                next[path] = {
+                    error: err?.message || "Cannot load the dashboard"
+                };
+            lovelace = next;
+            lovelaceRev++;
+        });
     }
 
     Timer {

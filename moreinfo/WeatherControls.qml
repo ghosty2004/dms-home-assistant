@@ -44,76 +44,23 @@ Column {
     property int typeIndex: 0
     readonly property string forecastType: forecastTypes[Math.min(typeIndex, forecastTypes.length - 1)]?.type ?? ""
 
-    property var forecast: []
-    property int _subId: -1
+    ForecastSource {
+        id: source
+        entityId: root.entityId
+        type: root.forecastType
+        live: root.live
+    }
+    readonly property var forecast: source.forecast
 
     spacing: Theme.spacingL
 
-    function _resubscribe() {
-        HaService.unsubscribe(_subId);
-        _subId = -1;
-        forecast = [];
-        if (!live || !entityId || !forecastType || !HaService.connected)
-            return;
-        const type = forecastType;
-        _subId = HaService.subscribe({
-            type: "weather/subscribe_forecast",
-            entity_id: entityId,
-            forecast_type: type
-        }, ev => {
-            if (ev.type === root.forecastType)
-                root.forecast = ev.forecast ?? [];
-        }, (res, err) => {
-            if (err)
-                console.warn("[HA] forecast", err.message);
-        });
-    }
-
-    onEntityIdChanged: {
-        typeIndex = 0;
-        Qt.callLater(_resubscribe);
-    }
-    onForecastTypeChanged: Qt.callLater(_resubscribe)
-    onLiveChanged: Qt.callLater(_resubscribe)
-    Component.onCompleted: _resubscribe()
-    Component.onDestruction: HaService.unsubscribe(_subId)
-
-    Connections {
-        target: HaService
-        function onConnectedChanged() {
-            if (HaService.connected)
-                Qt.callLater(root._resubscribe);
-            else
-                root._subId = -1;
-        }
-    }
+    onEntityIdChanged: typeIndex = 0
 
     function fmtTemp(v) {
         return Ha.isNumeric(v) ? Ha.formatMeasure(v, 1) : "–";
     }
 
-    // Today's high and low: first entry of a daily forecast, otherwise the
-    // range of the entries on the first forecast day.
-    readonly property var highLow: {
-        const f = forecast;
-        if (!f.length)
-            return null;
-        if (forecastType === "daily" && Ha.isNumeric(f[0].temperature) && Ha.isNumeric(f[0].templow))
-            return [f[0].temperature, f[0].templow];
-        const day = new Date(f[0].datetime).toDateString();
-        let hi = -Infinity;
-        let lo = Infinity;
-        for (let i = 0; i < f.length; i++) {
-            if (new Date(f[i].datetime).toDateString() !== day)
-                break;
-            const vals = [f[i].temperature, f[i].templow].filter(v => Ha.isNumeric(v)).map(Number);
-            for (let j = 0; j < vals.length; j++) {
-                hi = Math.max(hi, vals[j]);
-                lo = Math.min(lo, vals[j]);
-            }
-        }
-        return isFinite(hi) ? [hi, lo] : null;
-    }
+    readonly property var highLow: source.highLow
 
     // ------------------------------------------------ current conditions
     Item {

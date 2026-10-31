@@ -26,6 +26,12 @@ DashTabComponent {
             title: "Overview"
         },
         {
+            id: "dashboards",
+            icon: "mdi:view-dashboard",
+            label: "Boards",
+            title: "Dashboards"
+        },
+        {
             id: "areas",
             icon: "mdi:sofa",
             label: "Areas",
@@ -129,6 +135,8 @@ DashTabComponent {
 
     function navigate(target, arg) {
         page = target;
+        // reset first so the same argument requested again still reaches the page
+        pageArg = "";
         pageArg = arg || "";
         if (pluginService)
             pluginService.savePluginState(pluginId, "lastPage", target);
@@ -257,6 +265,8 @@ DashTabComponent {
                     return categoryPage;
                 case "entities":
                     return entitiesPage;
+                case "dashboards":
+                    return dashboardsPage;
                 }
                 return homePage;
             }
@@ -327,6 +337,15 @@ DashTabComponent {
         CategoryPage {
             category: root.page
             onMoreInfo: id => root.moreInfoId = id
+        }
+    }
+
+    Component {
+        id: dashboardsPage
+        DashboardsPage {
+            initialPath: root.pageArg
+            onMoreInfo: id => root.moreInfoId = id
+            onOpenPage: (p, arg) => root.navigate(p, arg)
         }
     }
 

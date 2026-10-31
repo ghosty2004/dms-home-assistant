@@ -43,6 +43,13 @@ Item {
             return "OK";
         }
 
+        // Lovelace dashboard and view, e.g. "dashboard-home/bedroom"
+        function dashboard(path: string): string {
+            HaService.requestPage("dashboards", path || "");
+            root.openDash();
+            return "OK";
+        }
+
         function area(areaId: string): string {
             HaService.requestPage("areas", areaId);
             root.openDash();
