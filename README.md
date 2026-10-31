@@ -49,6 +49,8 @@ A **Home** tab in the DMS dashboard, next to Overview, Media and Weather. A navi
 
 The **Boards** page renders the dashboards you built in Home Assistant, read with `lovelace/config`. Chips at the top switch between dashboards and their views. When you edit a dashboard in Home Assistant, the page updates by itself (`lovelace_updated`).
 
+![Your dashboards](screenshots/dashboards.png)
+
 - **Views**: sections (the 12-column grid with `grid_options`, `column_span` and `max_columns`), masonry, panel, and sidebar (laid out like masonry), plus view badges. Subviews are reachable through navigate actions.
 - **Cards**: tile (with `features`, `features_position`, `vertical`, `state_content`, `hide_state`, `color`, `icon`, `name`), heading (with entity badges), entities, entity, sensor (with graph), button, glance, grid, vertical and horizontal stack, conditional, weather forecast, thermostat, light, media control, picture entity (live video with `camera_view: live`), picture glance, picture, to-do list and shopping list, markdown (templates rendered by Home Assistant), gauge, history graph, statistics graph, area and map (the tracked entities, with a link to the map in Home Assistant).
 - **Tile features**: brightness, fan speed, cover open/close, target temperature, media controls, HVAC modes, preset, fan, swing and water heater modes, select options, numeric input (buttons or slider), toggle and button.
