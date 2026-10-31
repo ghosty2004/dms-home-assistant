@@ -9,7 +9,7 @@ import "../.."
 import ".."
 
 // Lovelace map card: the tracked entities with their zone, and a link to the
-// map in Home Assistant (maps are not drawn here).
+// same view in Home Assistant, where the map is drawn.
 Rectangle {
     id: root
 
@@ -56,7 +56,13 @@ Rectangle {
                 height: 34
                 icon: "mdi:open-in-new"
                 text: "Open map"
-                onClicked: Qt.openUrlExternally(HaService.baseUrl + "/map")
+                // the view this card is on: recent HA versions have no /map panel
+                onClicked: {
+                    if (root.ctx)
+                        root.ctx.openInBrowser();
+                    else
+                        Qt.openUrlExternally(HaService.baseUrl);
+                }
             }
         }
 
