@@ -511,6 +511,79 @@ Singleton {
         return HaService.haConfig?.unit_system?.temperature ?? "°C";
     }
 
+    // ---------------------------------------------------------------- weather
+
+    // Colors of the HA weather icons (weather-icon-* CSS variables). The other
+    // color modes take them from the theme accents.
+    readonly property var weatherColors: {
+        if (HaService.colorMode === "ha")
+            return {
+                cloudFront: Theme.isLightMode ? "#e3e3e3" : "#f9f9f9",
+                cloudBack: Theme.isLightMode ? "#bdbdbd" : "#d4d4d4",
+                sun: "#fdd93c",
+                moon: "#fcf497",
+                rain: "#30b3ff",
+                snow: Theme.isLightMode ? "#90a4ae" : "#f9f9f9"
+            };
+        const yellow = Theme.accent("yellow")?.onContainer ?? haPalette.yellow;
+        return {
+            cloudFront: Theme.surfaceText,
+            cloudBack: Theme.surfaceVariantText,
+            sun: yellow,
+            moon: yellow,
+            rain: Theme.accent("blue")?.onContainer ?? haPalette.lightBlue,
+            snow: Theme.surfaceText
+        };
+    }
+
+    readonly property var windDirections: ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+
+    function windDirection(bearing) {
+        if (!isNumeric(bearing))
+            return String(bearing ?? "");
+        return windDirections[Math.round(Number(bearing) / 22.5) % 16];
+    }
+
+    // Number with at most `decimals` fraction digits, grouped like the HA frontend.
+    function formatMeasure(value, decimals) {
+        if (!isNumeric(value))
+            return String(value ?? "");
+        const n = Number(value);
+        const d = Number.isInteger(n) ? 0 : (decimals ?? 1);
+        let s = n.toLocaleString(Qt.locale(), "f", d);
+        if (d > 0) {
+            const dot = Qt.locale().decimalPoint;
+            while (s.endsWith("0"))
+                s = s.slice(0, -1);
+            if (s.endsWith(dot))
+                s = s.slice(0, -1);
+        }
+        return s;
+    }
+
+    // Night at `ms` (now when omitted), from sun.sun rise and set times.
+    function isNightAt(ms) {
+        const sun = HaService.states["sun.sun"];
+        if (ms === undefined && sun)
+            return sun.state === "below_horizon";
+        const d = new Date(ms ?? Date.now());
+        const mins = d.getHours() * 60 + d.getMinutes();
+        let rise = 6 * 60;
+        let set = 20 * 60;
+        const a = sun?.attributes;
+        if (a?.next_rising && a?.next_setting) {
+            const r = new Date(a.next_rising);
+            const s = new Date(a.next_setting);
+            rise = r.getHours() * 60 + r.getMinutes();
+            set = s.getHours() * 60 + s.getMinutes();
+        }
+        return mins < rise || mins >= set;
+    }
+
+    function weatherCondition(entityId, condition) {
+        return translateState(entityId, null, condition) || capitalize(condition);
+    }
+
     // Secondary line of a tile, like the HA tile card.
     function secondaryText(entityId, st) {
         if (!st)

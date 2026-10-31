@@ -4,13 +4,13 @@ Your Home Assistant inside the DankMaterialShell dashboard, with the same icons,
 
 ![Areas](screenshots/areas.png)
 
-| Thermostat | Light | Climate |
+| Thermostat | Light | Weather |
 | --- | --- | --- |
-| ![Thermostat](screenshots/thermostat.png) | ![Light](screenshots/light.png) | ![Climate](screenshots/climate.png) |
+| ![Thermostat](screenshots/thermostat.png) | ![Light](screenshots/light.png) | ![Weather](screenshots/weather.png) |
 
-| Lights | Scenes & automations | All entities |
-| --- | --- | --- |
-| ![Lights](screenshots/lights.png) | ![Scenes](screenshots/scenes.png) | ![Entities](screenshots/entities.png) |
+| Climate | Lights | Scenes & automations | All entities |
+| --- | --- | --- | --- |
+| ![Climate](screenshots/climate.png) | ![Lights](screenshots/lights.png) | ![Scenes](screenshots/scenes.png) | ![Entities](screenshots/entities.png) |
 
 ## Contents
 
@@ -71,6 +71,7 @@ Entities are shown as Home Assistant style **tile cards**:
 | Vacuum, lawn mower | Start, pause, stop, dock, locate |
 | Update | Installed and latest version, release summary, install, skip |
 | Camera | Live snapshot refreshed every 2 seconds |
+| Weather | Condition with HA-style colored icons, temperature with today's high/low, pressure, humidity, wind with direction and the other measurements the integration reports, daily / hourly / twice daily forecast with precipitation |
 | Person | Picture, zone, coordinates |
 | Sensor, binary sensor | Large value |
 

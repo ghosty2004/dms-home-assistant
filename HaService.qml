@@ -242,6 +242,16 @@ Singleton {
         return id;
     }
 
+    function unsubscribe(id) {
+        if (!(id > 0) || _subscriptions[id] === undefined)
+            return;
+        delete _subscriptions[id];
+        send({
+            type: "unsubscribe_events",
+            subscription: id
+        }, null);
+    }
+
     function _onMessage(text) {
         let data;
         try {

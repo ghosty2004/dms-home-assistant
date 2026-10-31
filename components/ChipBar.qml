@@ -20,6 +20,7 @@ DFlickable {
     flickableDirection: Flickable.HorizontalFlick
     boundsBehavior: Flickable.StopAtBounds
     showScrollBar: false
+    wheelEnabled: false
 
     Row {
         id: row
@@ -75,5 +76,9 @@ DFlickable {
                 }
             }
         }
+    }
+
+    HorizontalWheel {
+        target: root
     }
 }

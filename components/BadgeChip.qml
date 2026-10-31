@@ -16,7 +16,7 @@ Rectangle {
 
     signal clicked
 
-    implicitHeight: 36
+    implicitHeight: Math.max(36, textCol.implicitHeight + Theme.spacingS * 2)
     implicitWidth: row.implicitWidth + Theme.spacingS + Theme.spacingM
     radius: height / 2
     color: DashMetrics.cardColor
@@ -59,8 +59,9 @@ Rectangle {
         }
 
         Column {
+            id: textCol
             anchors.verticalCenter: parent.verticalCenter
-            spacing: -1
+            spacing: 0
 
             StyledText {
                 visible: root.label !== ""

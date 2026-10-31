@@ -239,9 +239,10 @@ Item {
                             return mediaComp;
                         case "camera":
                             return cameraComp;
+                        case "weather":
+                            return weatherComp;
                         case "sensor":
                         case "binary_sensor":
-                        case "weather":
                         case "sun":
                             return valueComp;
                         }
@@ -406,6 +407,15 @@ Item {
         DomainControls {
             entityId: root.shownId
             st: root.st
+        }
+    }
+
+    Component {
+        id: weatherComp
+        WeatherControls {
+            entityId: root.shownId
+            st: root.st
+            live: root.open && HaService.dashLive
         }
     }
 
